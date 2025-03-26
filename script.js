@@ -1,8 +1,8 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const tileSize = 40;
-const rows = canvas.height / tileSize;
-const cols = canvas.width / tileSize;
+const rows = Math.floor(canvas.height / tileSize);
+const cols = Math.floor(canvas.width / tileSize);
 let snake = [
   { x: 200, y: 200 },
   { x: 180, y: 200 },
@@ -10,6 +10,8 @@ let snake = [
 ];
 const eyeSize = 5;
 const eyeSize2 = 2;
+console.log(rows);
+console.log(cols);
 let direction = { x: 1, y: 0 };
 let apple = {
   x: Math.floor((Math.random() * canvas.width) / tileSize) * tileSize,
@@ -38,10 +40,31 @@ function drawSnake() {
   ctx.fillStyle = "green";
   snake.forEach((segment) => {
     ctx.beginPath();
-    ctx.roundRect(segment.x, segment.y, tileSize, tileSize, 10);
+
+    // Draw a rectangle with rounded corners
+    ctx.moveTo(segment.x + 10, segment.y);
+    ctx.arcTo(
+      segment.x + tileSize,
+      segment.y,
+      segment.x + tileSize,
+      segment.y + tileSize,
+      10
+    );
+    ctx.arcTo(
+      segment.x + tileSize,
+      segment.y + tileSize,
+      segment.x,
+      segment.y + tileSize,
+      10
+    );
+    ctx.arcTo(segment.x, segment.y + tileSize, segment.x, segment.y, 10);
+    ctx.arcTo(segment.x, segment.y, segment.x + tileSize, segment.y, 10);
+
+    ctx.closePath();
     ctx.fill();
   });
 
+  // Draw eyes on the snake head
   ctx.fillStyle = "black";
   ctx.beginPath();
   ctx.arc(snake[0].x + 28, snake[0].y + 10, eyeSize, 0, Math.PI * 2);
@@ -60,9 +83,9 @@ function drawSnake() {
   ctx.arc(snake[0].x + 31, snake[0].y + 30, eyeSize2, 0, Math.PI * 2);
   ctx.fill();
 
+  // Draw the snake's mouth
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
-
   ctx.beginPath();
   ctx.moveTo(snake[0].x + tileSize, snake[0].y + tileSize / 2);
   ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 - 3);
@@ -70,6 +93,7 @@ function drawSnake() {
   ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 + 3);
   ctx.stroke();
 }
+
 function drawApple() {
   ctx.fillStyle = "red";
   ctx.fillRect(apple.x, apple.y, tileSize, tileSize);
@@ -102,9 +126,10 @@ function gameLoop() {
   } else {
     snake.pop();
   }
-  if (canvasColision()) {
+  if (canvasColision() || snakeColision()) {
     return;
   }
+
   drawApple();
 }
 
@@ -125,17 +150,28 @@ document.addEventListener("keydown", (event) => {
   }
 });
 function canvasColision() {
-  const head = snake;
-  for (let i = 0; i < head.length; i++) {
-    const segment = head[i];
-    if (
-      segment.x >= canvas.width + tileSize ||
-      segment.x < 0 - tileSize ||
-      segment.y >= canvas.height + tileSize ||
-      segment.y < 0 - tileSize
-    ) {
+  const head = snake[0];
+  if (
+    head.x === canvas.width + tileSize ||
+    head.x === 0 - tileSize * 2 ||
+    head.y === canvas.height + tileSize ||
+    head.y === 0 - tileSize * 2
+  ) {
+    stopGame();
+    alert("Koniec");
+    return true;
+  }
+  return false;
+}
+
+function snakeColision() {
+  const head = snake[0];
+
+  for (let i = 1; i < snake.length; i++) {
+    const segment = snake[i];
+    if (head.x === segment.x && head.y === segment.y) {
       stopGame();
-      alert("Koniec");
+      alert("uderzyles samego siebie");
       return true;
     }
   }
@@ -148,7 +184,3 @@ function stopGame() {
   clearInterval(gameInterval);
 }
 startGame();
-segment.x >= canvas.width + tileSize ||
-  segment.x < 0 - tileSize ||
-  segment.y >= canvas.height + tileSize ||
-  segment.y < 0 - tileSize;
