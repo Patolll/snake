@@ -42,7 +42,6 @@ function drawSnake() {
   snake.forEach((segment) => {
     ctx.beginPath();
 
-    // Draw a rectangle with rounded corners
     ctx.moveTo(segment.x + 10, segment.y);
     ctx.arcTo(
       segment.x + tileSize,
@@ -65,7 +64,6 @@ function drawSnake() {
     ctx.fill();
   });
 
-  // Draw eyes on the snake head
   ctx.fillStyle = "black";
   ctx.beginPath();
   ctx.arc(snake[0].x + 28, snake[0].y + 10, eyeSize, 0, Math.PI * 2);
@@ -84,7 +82,6 @@ function drawSnake() {
   ctx.arc(snake[0].x + 31, snake[0].y + 30, eyeSize2, 0, Math.PI * 2);
   ctx.fill();
 
-  // Draw the snake's mouth
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
   ctx.beginPath();
