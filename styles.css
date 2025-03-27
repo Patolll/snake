@@ -5,6 +5,53 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  font-family: Arial, sans-serif;
   height: 100vh;
+  font-weight: 600;
+}
+#gameCanvas {
+  border: 5px solid green;
+  display: none;
+}
+#startScreen,
+#endScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: bisque;
+  text-align: center;
+  border-top: solid red 5px;
+  border-bottom: solid rgb(238, 72, 72) 5px;
+  border-left: solid rgb(238, 72, 72) 5px;
+  border-right: solid red 5px;
+  padding: 25px;
+  width: 40%;
+  height: 30%;
+  transition: 0.3s ease background-color;
+}
+button {
+  border: none;
+  background-color: hsl(120, 54%, 47%);
+  color: white;
+  font-size: 2rem;
+  width: 40%;
+  height: 20%;
+  transition: 0.3s ease background-color;
+}
+button:hover {
+  background-color: hsl(120, 54%, 57%);
+}
+button:active {
+  background-color: hsl(120, 54%, 67%);
+}
+#endScreen {
+  display: none;
+}
+#endCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20%;
+  font-size: 1.5rem;
 }

@@ -7,8 +7,19 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="startScreen">
+      <h1>Welcome to the snake Game!</h1>
+      <button id="startGameBtn">Start</button>
+    </div>
+    <div id="endScreen">
+      <h1>You lost!</h1>
+      <div id="endCont">
+        <button id="restartGameBtn">restart</button>
+        <p class="points">Points: 0</p>
+      </div>
+    </div>
     <canvas id="gameCanvas" width="600px" height="600px"></canvas>
-    <p id="points">Points: 0</p>
+    <p class="points">Points: 0</p>
     <script src="script.js"></script>
   </body>
 </html>

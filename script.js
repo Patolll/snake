@@ -19,7 +19,8 @@ let apple = {
 };
 let gameInterval;
 let points = 0;
-let resultPoints = document.getElementById("points");
+let resultPoints = document.getElementsByClassName("points");
+
 function drawGrid() {
   ctx.strokeStyle = "black";
   for (let i = 0; i <= cols; i++) {
@@ -87,10 +88,28 @@ function drawSnake() {
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(snake[0].x + tileSize, snake[0].y + tileSize / 2);
-  ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 - 3);
-  ctx.moveTo(snake[0].x + tileSize, snake[0].y + tileSize / 2);
-  ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 + 3);
+  if (direction.x === 1) {
+    ctx.moveTo(snake[0].x + tileSize, snake[0].y + tileSize / 2);
+    ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 - 3);
+    ctx.moveTo(snake[0].x + tileSize, snake[0].y + tileSize / 2);
+    ctx.lineTo(snake[0].x + tileSize + 15, snake[0].y + tileSize / 2 + 3);
+  } else if (direction.x === -1) {
+    ctx.moveTo(snake[0].x, snake[0].y + tileSize / 2);
+    ctx.lineTo(snake[0].x - 15, snake[0].y + tileSize / 2 - 3);
+    ctx.moveTo(snake[0].x, snake[0].y + tileSize / 2);
+    ctx.lineTo(snake[0].x - 15, snake[0].y + tileSize / 2 + 3);
+  } else if (direction.y === 1) {
+    ctx.moveTo(snake[0].x + tileSize / 2, snake[0].y + tileSize);
+    ctx.lineTo(snake[0].x + tileSize / 2 - 3, snake[0].y + tileSize + 15);
+    ctx.moveTo(snake[0].x + tileSize / 2, snake[0].y + tileSize);
+    ctx.lineTo(snake[0].x + tileSize / 2 + 3, snake[0].y + tileSize + 15);
+  } else if (direction.y === -1) {
+    ctx.moveTo(snake[0].x + tileSize / 2, snake[0].y);
+    ctx.lineTo(snake[0].x + tileSize / 2 - 3, snake[0].y - 15);
+    ctx.moveTo(snake[0].x + tileSize / 2, snake[0].y);
+    ctx.lineTo(snake[0].x + tileSize / 2 + 3, snake[0].y - 15);
+  }
+
   ctx.stroke();
 }
 
@@ -122,7 +141,9 @@ function gameLoop() {
   if (head.x === apple.x && head.y === apple.y) {
     generateApple();
     points++;
-    resultPoints.textContent = `Points: ${points}`;
+    for (let i = 0; i < resultPoints.length; i++) {
+      resultPoints[i].textContent = `Points: ${points}`;
+    }
   } else {
     snake.pop();
   }
@@ -158,7 +179,7 @@ function canvasColision() {
     head.y === 0 - tileSize * 2
   ) {
     stopGame();
-    alert("Koniec");
+
     return true;
   }
   return false;
@@ -171,7 +192,7 @@ function snakeColision() {
     const segment = snake[i];
     if (head.x === segment.x && head.y === segment.y) {
       stopGame();
-      alert("uderzyles samego siebie");
+
       return true;
     }
   }
@@ -179,8 +200,35 @@ function snakeColision() {
 }
 function startGame() {
   gameInterval = setInterval(gameLoop, 100);
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("endScreen").style.display = "none";
+  document.getElementById("gameCanvas").style.display = "block";
 }
 function stopGame() {
   clearInterval(gameInterval);
+  document.getElementById("endScreen").style.display = "block";
 }
-startGame();
+function restartGame() {
+  snake = [
+    { x: 200, y: 200 },
+    { x: 180, y: 200 },
+    { x: 160, y: 200 },
+  ];
+  direction = { x: 1, y: 0 };
+  apple = {
+    x: Math.floor((Math.random() * canvas.width) / tileSize) * tileSize,
+    y: Math.floor((Math.random() * canvas.height) / tileSize) * tileSize,
+  };
+  points = 0;
+  for (let i = 0; i < resultPoints.length; i++) {
+    resultPoints[i].textContent = `Points: ${points}`;
+  }
+
+  document.getElementById("endScreen").style.display = "none";
+
+  gameInterval = setInterval(gameLoop, 100);
+}
+document.getElementById("startGameBtn").addEventListener("click", startGame);
+document
+  .getElementById("restartGameBtn")
+  .addEventListener("click", restartGame);
