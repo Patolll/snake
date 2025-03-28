@@ -8,9 +8,13 @@ body {
   font-family: Arial, sans-serif;
   height: 100vh;
   font-weight: 600;
+  background-color: #282828;
 }
 #gameCanvas {
-  border: 5px solid green;
+  border: 5px solid #00ff00;
+  border-radius: 10px;
+  background-color: black;
+
   display: none;
 }
 #startScreen,
@@ -19,34 +23,38 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: bisque;
+  background-color: rgba(255, 69, 0);
   text-align: center;
-  border-top: solid red 5px;
-  border-bottom: solid rgb(238, 72, 72) 5px;
-  border-left: solid rgb(238, 72, 72) 5px;
-  border-right: solid red 5px;
+  border-radius: 15px;
   padding: 25px;
   width: 40%;
   height: 30%;
-  transition: 0.3s ease background-color;
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.6);
+  animation: fadeIn 0.5s ease-in-out forwards;
+  color: white;
 }
 button {
   border: none;
-  background-color: hsl(120, 54%, 47%);
+  background: linear-gradient(135deg, #00ff00, #008000);
   color: white;
-  font-size: 2rem;
-  width: 40%;
-  height: 20%;
-  transition: 0.3s ease background-color;
+  font-size: 1.5rem;
+  width: 50%;
+  height: 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 255, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 button:hover {
-  background-color: hsl(120, 54%, 57%);
+  background: linear-gradient(135deg, #00ff88, #00cc44);
+  box-shadow: 0 5px 15px rgba(0, 255, 0, 0.6);
 }
 button:active {
-  background-color: hsl(120, 54%, 67%);
+  transform: scale(0.95);
 }
 #endScreen {
   display: none;
+  background-color: rgba(255, 0, 0);
 }
 #endCont {
   display: flex;
@@ -54,4 +62,17 @@ button:active {
   align-items: center;
   gap: 20%;
   font-size: 1.5rem;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+.points {
+  color: white;
 }
